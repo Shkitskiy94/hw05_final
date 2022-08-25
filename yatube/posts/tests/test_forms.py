@@ -107,7 +107,10 @@ class PostFormTest(TestCase):
             data=self.form_data,
             follow=True
         )
-        self.assertRedirects(response_guest, ('/auth/login/?next=/posts/1/edit/'))
+        self.assertRedirects(
+            response_guest,
+            ('/auth/login/?next=/posts/1/edit/'),
+        )
         self.assertEqual(Post.objects.count(), posts_count)
 
     def test_create_post_with_image(self):

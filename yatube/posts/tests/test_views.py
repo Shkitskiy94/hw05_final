@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.cache import cache
-from django.db import IntegrityError
 
 from posts.models import Group, Post, Follow
 from posts.forms import PostForm, Comment
