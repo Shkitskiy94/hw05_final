@@ -27,6 +27,15 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Игнорировать все файлы в каталоге venv/
+.venv/
+
+# Игнорировать coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover 
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -144,9 +153,3 @@ dmypy.json
 .history/
 
 .mypy_cache
-
-# папки со статикой и медиа
-static/
-yatube/posts/static/
-yatube/media/
-
