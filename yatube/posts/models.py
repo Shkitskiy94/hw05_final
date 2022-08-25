@@ -70,7 +70,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Автор',
-     )
+    )
     text = models.TextField(
         help_text='Введите текст комментария',
         verbose_name='Текст комментария'
