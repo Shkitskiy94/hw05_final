@@ -7,7 +7,7 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from posts.forms import PostForm
-from posts.models import Post, Group, User
+from posts.models import Post, Group, User, Comment
 
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
@@ -146,3 +146,36 @@ class PostFormTest(TestCase):
         self.assertEqual(post_with_image.group.id, form_data['group'])
         self.assertEqual(post_with_image.author, form_data['author'])
         self.assertEqual(post_with_image.image, 'posts/small.gif')
+
+    def test_create_new_comment(self):
+        """Тест: после успешной отправки комментарий появляется в БД."""
+        comment_count = Comment.objects.count()
+        form_data = {
+            'text': 'Comment'
+        }
+        self.authorized_client.post(
+            reverse(
+                'posts:add_comment',
+                kwargs={'post_id': self.post.id}
+            ),
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(Comment.objects.count(), comment_count + 1)
+        self.assertTrue(Comment.objects.filter(post=self.post,
+                                               author=self.author,
+                                               text='Comment').exists())
+
+    def test_non_authorized_no_comment(self):
+        """Тест: неавторизованный пользователь не может оставить
+        комментарий."""
+        comments_count = Comment.objects.count()
+        form_data = {
+            'text': 'Comment'
+        }
+        self.guest_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(Comment.objects.count(), comments_count)

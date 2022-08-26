@@ -64,7 +64,7 @@ class PostsViewsTest(TestCase):
             reverse(
                 'posts:post_edit',
                 kwargs={'post_id': cls.post.id}
-            ): 'Страница создания поста'
+            ): 'Страница создания поста',
         }
         cls.post_with_views = {
             reverse('posts:index'): 'Главная страница',
@@ -95,6 +95,9 @@ class PostsViewsTest(TestCase):
                 'posts:post_edit',
                 kwargs={'post_id': cls.post.id}
             ),
+            'posts/follow.html': reverse(
+                'posts:follow_index'
+            )
         }
         cls.form = PostForm()
 
@@ -230,6 +233,26 @@ class PostsViewsTest(TestCase):
         )
         self.assertTrue(Follow.objects.filter(author=self.another_user,
                                               user=self.user))
+
+    def test_create_follow_non_authorized(self):
+        """Тест создания подписок неавторизованным пользователем."""
+        self.quest_client.get(
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.another_user.username}
+                    )
+        )
+        self.assertFalse(Follow.objects.filter(author=self.another_user,
+                                               user=self.user))
+
+    def test_create_follow_author(self):
+        """Тест автор подписки не может подписаться сам на себя."""
+        self.authorized_client.get(
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.user.username}
+                    )
+        )
+        self.assertFalse(Follow.objects.filter(author=self.user,
+                                               user=self.user))
 
     def test_delete_follow_authorized(self):
         """Тест удаления подписок авторизованным пользователем."""

@@ -146,6 +146,8 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 LIMIT = 10
 
+TEXT_LIMIT = 15
+
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
 MEDIA_URL = '/media/'

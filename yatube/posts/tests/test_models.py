@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.conf import settings
 
 from ..models import Group, Post
 
@@ -26,7 +27,7 @@ class PostModelTest(TestCase):
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
         post = PostModelTest.post
-        post_object = post.text[:15]
+        post_object = post.text[:settings.TEXT_LIMIT]
         self.assertEqual(post_object, str(post), 'post error')
         group = PostModelTest.group
         group_object = group.title

@@ -46,6 +46,7 @@ class PostURLTests(TestCase):
             f'/posts/{post_id}/': 'posts/post_detail.html',
             f'/posts/{post_id}/edit/': 'posts/create_post.html',
             '/create/': 'posts/create_post.html',
+            '/follow/': 'posts/follow.html',
         }
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
@@ -61,6 +62,10 @@ class PostURLTests(TestCase):
             f'/posts/{self.post.id}/': HTTPStatus.OK,
             '/create/': HTTPStatus.FOUND,
             f'/posts/{self.post.id}/edit/': HTTPStatus.FOUND,
+            f'/posts/{self.post.id}/comment/': HTTPStatus.FOUND,
+            '/follow/': HTTPStatus.FOUND,
+            f'/profile/{self.user.username}/follow/': HTTPStatus.FOUND,
+            f'/profile/{self.user.username}/unfollow/': HTTPStatus.FOUND,
         }
         for adress, expected in urls.items():
             with self.subTest(adress=adress):
@@ -76,6 +81,10 @@ class PostURLTests(TestCase):
             f'/posts/{self.post.id}/': HTTPStatus.OK,
             '/create/': HTTPStatus.OK,
             f'/posts/{self.post.id}/edit/': HTTPStatus.OK,
+            f'/posts/{self.post.id}/comment/': HTTPStatus.FOUND,
+            '/follow/': HTTPStatus.OK,
+            f'/profile/{self.user.username}/follow/': HTTPStatus.FOUND,
+            f'/profile/{self.user.username}/unfollow/': HTTPStatus.FOUND,
         }
         for adress, expected in urls.items():
             with self.subTest(adress=adress):
