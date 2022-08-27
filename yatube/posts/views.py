@@ -3,12 +3,10 @@ from .models import Post, Group, User, Follow
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.views.decorators.cache import cache_page
 
 from .forms import PostForm, CommentForm
 
 
-@cache_page(20 * 20)
 def index(request):
     template = 'posts/index.html'
     post_list = Post.objects.all()
